@@ -1,18 +1,30 @@
 import { CryptoFilter } from '@/store/StoreProvider';
 import { useContext, useEffect } from 'react';
-
+const cryptoCoins = [
+  {
+    event: 'bts:subscribe',
+    data: { channel: 'live_trades_btcusd' },
+  },
+  {
+    event: 'bts:subscribe',
+    data: { channel: 'live_trades_ethusd' },
+  },
+  {
+    event: 'bts:subscribe',
+    data: { channel: 'live_trades_xrpusd' },
+  },
+  {
+    event: 'bts:subscribe',
+    data: { channel: 'live_trades_linkusd' },
+  },
+  {
+    event: 'bts:subscribe',
+    data: { channel: 'live_trades_manausd' },
+  },
+];
 export function useConnect() {
   const { state, dispatch } = useContext(CryptoFilter);
-  const cryptoCoins = [
-    {
-      event: 'bts:subscribe',
-      data: { channel: 'live_trades_btcusd' },
-    },
-    {
-      event: 'bts:subscribe',
-      data: { channel: 'live_trades_ethusd' },
-    },
-  ];
+
   const connect = () => {
     const socketUrl = 'wss://ws.bitstamp.net';
     const socket = new WebSocket(socketUrl);

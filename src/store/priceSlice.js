@@ -3,12 +3,27 @@ export const initialState = {
     live_trades_btcusd: {
       id: 'live_trades_btcusd',
       pair: 'btc/usd',
-      price: '26000',
+      price: 'Loading',
     },
     live_trades_ethusd: {
       id: 'live_trades_ethusd',
       pair: 'eth/usd',
-      price: '1600',
+      price: 'Loading',
+    },
+    live_trades_xrpusd: {
+      id: 'live_trades_xrpusd',
+      pair: 'xrp/usd',
+      price: 'Loading',
+    },
+    live_trades_linkusd: {
+      id: 'live_trades_linkusd',
+      pair: 'link/usd',
+      price: 'Loading',
+    },
+    live_trades_manausd: {
+      id: 'live_trades_manausd',
+      pair: 'mana/usd',
+      price: 'Loading',
     },
   },
   status: 'loading',

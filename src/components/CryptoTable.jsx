@@ -48,7 +48,7 @@ export default function CryptoTable() {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Price ( $ )</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
