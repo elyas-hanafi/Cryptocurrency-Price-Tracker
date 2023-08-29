@@ -8,27 +8,34 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TextField,
 } from '@mui/material';
 import { useConnect } from '@/utils/socket';
 import { CryptoFilter } from '@/store/StoreProvider';
+import CryptoTableCell from './CryptoTableCell';
+const rowsPerPageOptions = [5, 10, 20];
 export default function CryptoTable() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const { state } = useContext(CryptoFilter);
-
-  const { connect } = useConnect();
-
-  useEffect(() => {
-    connect();
-    const disconnect = connect();
-    return () => disconnect();
-  }, []);
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   const filteredData = Object.values(state.pairs).filter((crypto) =>
     crypto.pair.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -52,19 +59,23 @@ export default function CryptoTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.map((pair) => {
-              return (
-                <TableRow key={pair.id}>
-                  <TableCell>{pair.pair}</TableCell>
-                  <TableCell align="right">
-                    {state.status === 'loading' ? 'Loading' : pair.price}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {filteredData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((pair, index) => (
+                <CryptoTableCell key={index} channel={pair.channel} />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={rowsPerPageOptions}
+        component="div"
+        count={filteredData.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Container>
   );
 }

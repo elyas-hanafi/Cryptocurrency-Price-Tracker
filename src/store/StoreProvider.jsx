@@ -1,6 +1,7 @@
 'use client';
 import React, { createContext, useReducer } from 'react';
-import reducer, { initialState } from './priceSlice';
+import reducer from './priceSlice';
+import { initialState } from './state';
 
 export const CryptoFilter = createContext();
 

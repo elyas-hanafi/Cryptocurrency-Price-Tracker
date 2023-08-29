@@ -22,22 +22,24 @@ const cryptoCoins = [
     data: { channel: 'live_trades_manausd' },
   },
 ];
-export function useConnect() {
+export function useConnect(live_trades_channel) {
   const { state, dispatch } = useContext(CryptoFilter);
-
   const connect = () => {
     const socketUrl = 'wss://ws.bitstamp.net';
     const socket = new WebSocket(socketUrl);
     socket.onopen = () => {
       console.log('Connected to Bitstamp WebSocket API');
 
-      cryptoCoins.map((coin) => {
-        socket.send(JSON.stringify(coin));
-      });
+      socket.send(
+        JSON.stringify({
+          event: 'bts:subscribe',
+          data: { channel: `${live_trades_channel}` },
+        })
+      );
     };
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data);
+      console.log('data :', data);
       if (data.event === 'trade') {
         dispatch({
           type: 'UPDATE_VALUE',
