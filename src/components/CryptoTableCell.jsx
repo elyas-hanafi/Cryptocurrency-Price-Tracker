@@ -6,7 +6,7 @@ import { CryptoFilter } from '@/store/StoreProvider';
 export default function CryptoTableCell({ channel = 'btcusdt' }) {
   const { connect } = useConnect();
 
-  const { state } = useContext(CryptoFilter);
+  const { dispatch, state } = useContext(CryptoFilter);
 
   useEffect(() => {
     connect(channel);
