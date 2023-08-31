@@ -24,7 +24,7 @@ export const useConnect = () => {
     };
 
     return () => {
-      ws.close;
+      ws.close();
     };
   };
   return { connect };
