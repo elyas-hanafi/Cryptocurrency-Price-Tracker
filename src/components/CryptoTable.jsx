@@ -12,9 +12,10 @@ import {
   TableRow,
   TextField,
 } from '@mui/material';
-import { useConnect } from '@/utils/socket';
 import { CryptoFilter } from '@/store/StoreProvider';
 import CryptoTableCell from './CryptoTableCell';
+import { useConnect } from '@/utils/socket';
+
 const rowsPerPageOptions = [5, 10, 20];
 export default function CryptoTable() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,6 +40,7 @@ export default function CryptoTable() {
   const filteredData = Object.values(state.pairs).filter((crypto) =>
     crypto.pair.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   return (
     <Container>
       <h1 style={{ color: 'white' }}>Cryptocurrency Price Tracker</h1>

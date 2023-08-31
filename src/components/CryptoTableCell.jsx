@@ -3,14 +3,19 @@ import { useConnect } from '@/utils/socket';
 import { TableCell, TableRow } from '@mui/material';
 import { CryptoFilter } from '@/store/StoreProvider';
 
-export default function CryptoTableCell({ channel = 'live_trades_btcusd' }) {
-  const { connect } = useConnect(channel);
+export default function CryptoTableCell({ channel = 'btcusdt' }) {
+  const { connect } = useConnect();
+
   const { state } = useContext(CryptoFilter);
+
   useEffect(() => {
-    connect();
-    const disconnect = connect();
-    return () => disconnect();
-  }, []);
+    connect(channel);
+
+    const disConnect = connect(channel);
+
+    // return clean up
+    return () => disConnect();
+  }, [channel]);
 
   let tableCellData = state.pairs[channel];
 

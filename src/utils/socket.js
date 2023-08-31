@@ -1,61 +1,31 @@
 import { CryptoFilter } from '@/store/StoreProvider';
-import { useContext, useEffect } from 'react';
-const cryptoCoins = [
-  {
-    event: 'bts:subscribe',
-    data: { channel: 'live_trades_btcusd' },
-  },
-  {
-    event: 'bts:subscribe',
-    data: { channel: 'live_trades_ethusd' },
-  },
-  {
-    event: 'bts:subscribe',
-    data: { channel: 'live_trades_xrpusd' },
-  },
-  {
-    event: 'bts:subscribe',
-    data: { channel: 'live_trades_linkusd' },
-  },
-  {
-    event: 'bts:subscribe',
-    data: { channel: 'live_trades_manausd' },
-  },
-];
-export function useConnect(live_trades_channel) {
-  const { state, dispatch } = useContext(CryptoFilter);
-  const connect = () => {
-    const socketUrl = 'wss://ws.bitstamp.net';
-    const socket = new WebSocket(socketUrl);
-    socket.onopen = () => {
-      console.log('Connected to Bitstamp WebSocket API');
+import { useContext } from 'react';
 
-      socket.send(
-        JSON.stringify({
-          event: 'bts:subscribe',
-          data: { channel: `${live_trades_channel}` },
-        })
-      );
-    };
-    socket.onmessage = (event) => {
+export const useConnect = () => {
+  const { state, dispatch } = useContext(CryptoFilter);
+
+  const connect = (channel) => {
+    let ws = new WebSocket(`wss://stream.binance.com:9443/ws/${channel}@trade`);
+
+    ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log('data :', data);
-      if (data.event === 'trade') {
+      const price = parseFloat(data.p);
+      if (data.e == 'trade') {
         dispatch({
           type: 'UPDATE_VALUE',
-          channel: data.channel,
-          price: data.data.price_str,
+          channel: data.s,
+          price: price,
         });
       }
     };
-    socket.onclose = () => {
-      console.log('Disconnected from Bitstamp WebSocket API');
+
+    ws.onclose = () => {
+      console.log('Disconnect To Binance Websocket Api');
     };
 
     return () => {
-      socket.close();
+      ws.close;
     };
   };
-
   return { connect };
-}
+};

@@ -1,7 +1,8 @@
 export default function reducer(state, action) {
   switch (action.type) {
     case 'UPDATE_VALUE':
-      const channel = action.channel;
+      const channel = action.channel.toLowerCase();
+
       return {
         ...state,
         pairs: {
